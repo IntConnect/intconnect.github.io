@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestRail Reports</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', 'Arial Black', sans-serif;
+            background: #fef6e4;
+            min-height: 100vh;
+            padding: 2rem;
+            color: #000;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .title-wrapper {
+            display: inline-block;
+            background: #fff;
+            padding: 1.5rem 2.5rem;
+            border: 5px solid #000;
+            box-shadow: 8px 8px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: #f72585;
+            color: #fff;
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            text-transform: uppercase;
+        }
+
+        .search-box {
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: 5px solid #000;
+            background: #fff;
+            box-shadow: 6px 6px 0 #000;
+            transition: all 0.1s ease;
+            text-transform: uppercase;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            transform: translate(3px, 3px);
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .search-box input::placeholder {
+            color: #999;
+        }
+
+        .reports-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
+        .report-card {
+            background: #fff;
+            border: 5px solid #000;
+            padding: 2rem;
+            box-shadow: 8px 8px 0 #000;
+            transition: all 0.1s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            position: relative;
+        }
+
+        .report-card:hover {
+            transform: translate(4px, 4px);
+            box-shadow: 4px 4px 0 #000;
+        }
+
+        .report-card:active {
+            transform: translate(8px, 8px);
+            box-shadow: 0 0 0 #000;
+        }
+
+        .report-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: #4cc9f0;
+            color: #000;
+            font-weight: 900;
+            font-size: 0.75rem;
+            padding: 0.5rem 1rem;
+            border: 3px solid #000;
+            text-transform: uppercase;
+            transform: rotate(3deg);
+        }
+
+        .report-icon {
+            width: 60px;
+            height: 60px;
+            background: #7209b7;
+            border: 4px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+
+        .report-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            margin-bottom: 0.8rem;
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .report-meta {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem;
+            display: none;
+        }
+
+        .no-results-box {
+            background: #ff006e;
+            color: #fff;
+            padding: 2rem;
+            border: 5px solid #000;
+            box-shadow: 8px 8px 0 #000;
+            display: inline-block;
+            font-weight: 900;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+
+        /* Color variations for cards */
+        .report-card:nth-child(4n+1) { background: #ffbe0b; }
+        .report-card:nth-child(4n+2) { background: #fb5607; color: #fff; }
+        .report-card:nth-child(4n+3) { background: #8338ec; color: #fff; }
+        .report-card:nth-child(4n+4) { background: #3a86ff; color: #fff; }
+
+        .report-card:nth-child(4n+1) .report-icon { background: #fb5607; }
+        .report-card:nth-child(4n+2) .report-icon { background: #ffbe0b; }
+        .report-card:nth-child(4n+3) .report-icon { background: #fb5607; }
+        .report-card:nth-child(4n+4) .report-icon { background: #8338ec; }
+
+        .report-card:nth-child(4n+1) .report-badge { background: #3a86ff; color: #fff; }
+        .report-card:nth-child(4n+2) .report-badge { background: #ffbe0b; color: #000; }
+        .report-card:nth-child(4n+3) .report-badge { background: #fb5607; color: #fff; }
+        .report-card:nth-child(4n+4) .report-badge { background: #ffbe0b; color: #000; }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .title-wrapper {
+                padding: 1rem 1.5rem;
+            }
+
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-wrapper">
+                <h1>📊 TESTRAIL<br>REPORTS</h1>
+            </div>
+            <div>
+                <span class="subtitle">Test Execution Hub</span>
+            </div>
+        </header>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 SEARCH REPORTS...">
+        </div>
+
+        <div class="reports-grid" id="reportsGrid">
+            <!-- Contoh report cards - ganti dengan file HTML Anda -->
+            <a href="testcase-1/index.html" class="report-card">
+                <div class="report-badge">NEW</div>
+                <div class="report-icon">📄</div>
+                <div class="report-title">Test Case</div>
+                <div class="report-meta">Updated: 9 Feb 2026</div>
+            </a>
+
+            <a href="testrun-1/index.html" class="report-card">
+                <div class="report-badge">HOT</div>
+                <div class="report-icon">📊</div>
+                <div class="report-title">Test Run 1</div>
+                <div class="report-meta">Updated: 09 Feb 2026</div>
+            </a>
+
+            <a href="testrun-2/index.html" class="report-card">
+                <div class="report-badge">⭐</div>
+                <div class="report-icon">🔍</div>
+                <div class="report-title">Test Run 2</div>
+                <div class="report-meta">Updated: 09 Feb 2026</div>
+            </a>
+
+              <a href="summary-defect/index.html" class="report-card">
+                <div class="report-badge">⭐</div>
+                <div class="report-icon">🔍</div>
+                <div class="report-title">Summary Defect</div>
+                <div class="report-meta">Updated: 09 Feb 2026</div>
+            </a>
+
+          
+        </div>
+
+        <div class="no-results" id="noResults">
+            <div class="no-results-box">
+                ⚠️ NO REPORTS FOUND!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        const reportsGrid = document.getElementById('reportsGrid');
+        const noResults = document.getElementById('noResults');
+        const reportCards = document.querySelectorAll('.report-card');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            let visibleCount = 0;
+
+            reportCards.forEach(card => {
+                const title = card.querySelector('.report-title').textContent.toLowerCase();
+                const meta = card.querySelector('.report-meta').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || meta.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+                reportsGrid.style.display = 'none';
+            } else {
+                noResults.style.display = 'none';
+                reportsGrid.style.display = 'grid';
+            }
+        });
+    </script>
+</body>
+</html>
